@@ -6,6 +6,7 @@ import com.xogito.userprojectmanagement.entities.dtos.ProjectDto;
 import com.xogito.userprojectmanagement.entities.dtos.ProjectInfoDto;
 import com.xogito.userprojectmanagement.exceptions.ProjectNotFoundException;
 import com.xogito.userprojectmanagement.exceptions.UserNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface ProjectService {
     ProjectDto updateProject(ProjectDto projectDto, Long projectId) throws ProjectNotFoundException;
     void deleteProject(Long projectId) throws ProjectNotFoundException;
     void assignUserToProject(AssignProjectDto assignProjectDto) throws UserNotFoundException, ProjectNotFoundException;
-    List<ProjectInfoDto> searchProjectsByName(String projectName, int page, int pageSize);
+    List<ProjectInfoDto> searchProjectsByName(String projectName, Pageable pageable);
     ProjectDto getProjectById(Long projectId) throws ProjectNotFoundException;
-    List<ProjectDto> getAllProjects(int pageNumber, int pageSize);
+    List<ProjectInfoDto> getAllProjects(Pageable pageable);
 }

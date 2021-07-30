@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -35,6 +36,7 @@ public class Project {
     )
     List<User> assignedUsers;
 
+    @NotNull(message = "Project name is required")
     private String name;
     private String description;
 

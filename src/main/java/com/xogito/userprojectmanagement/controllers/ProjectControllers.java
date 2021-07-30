@@ -8,6 +8,7 @@ import com.xogito.userprojectmanagement.exceptions.ProjectNotFoundException;
 import com.xogito.userprojectmanagement.exceptions.UserNotFoundException;
 import com.xogito.userprojectmanagement.services.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,8 +32,8 @@ public class ProjectControllers {
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<ProjectDto>> getAllProjects(@RequestParam int pageNumber, @RequestParam int pageSize) {
-        return new ResponseEntity(projectService.getAllProjects(pageNumber, pageSize), HttpStatus.OK);
+    public ResponseEntity<List<ProjectInfoDto>> getAllProjects(Pageable pageable) {
+        return new ResponseEntity(projectService.getAllProjects(pageable), HttpStatus.OK);
     }
 
     @PostMapping
@@ -41,7 +42,7 @@ public class ProjectControllers {
     }
 
     @PutMapping("/{projectId}")
-    public ResponseEntity<ProjectDto> updateProject(@PathVariable Long projectId, @Valid ProjectDto projectDto) throws ProjectNotFoundException {
+    public ResponseEntity<ProjectDto> updateProject(@PathVariable Long projectId, @Valid @RequestBody ProjectDto projectDto) throws ProjectNotFoundException {
         return new ResponseEntity(projectService.updateProject(projectDto, projectId), HttpStatus.OK);
     }
 
@@ -56,8 +57,8 @@ public class ProjectControllers {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProjectInfoDto>> searchProjectsByName(@RequestParam String query, @RequestParam int pageNumber, @RequestParam int pageSize) {
-        return new ResponseEntity(projectService.searchProjectsByName(query, pageNumber, pageSize), HttpStatus.OK);
+    public ResponseEntity<List<ProjectInfoDto>> searchProjectsByName(@RequestParam String query, Pageable pageable) {
+        return new ResponseEntity(projectService.searchProjectsByName(query, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{projectId}")

@@ -50,13 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    public List<UserDto> getAllUsers(Pageable pageable) {
         return userMapper.mapUsersToUserDtos(userRepository.findAll(pageable).getContent());
     }
 
     @Override
-    public List<UserDto> getUsersByNameOrEmail(String query, int pageNumber, int pageSize) {
-        return userMapper.mapUsersToUserDtos(userRepository.findByNameContainingOrEmailContaining(query, query));
+    public List<UserDto> getUsersByNameOrEmail(String query, Pageable pageable) {
+        return userMapper.mapUsersToUserDtos(userRepository.findByNameContainingOrEmailContaining(query, query, pageable));
     }
 }

@@ -73,8 +73,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectInfoDto> searchProjectsByName(String projectName, int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    public List<ProjectInfoDto> searchProjectsByName(String projectName, Pageable pageable) {
         return projectInfoMapper.mapProjectsToInfoDtos(projectRepository.findByNameContaining(projectName, pageable));
     }
 
@@ -84,8 +83,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDto> getAllProjects(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return projectMapper.mapProjectsToDtos(projectRepository.findAll(pageable).getContent());
+    public List<ProjectInfoDto> getAllProjects(Pageable pageable) {
+        return projectInfoMapper.mapProjectsToInfoDtos(projectRepository.findAll(pageable).getContent());
     }
 }
