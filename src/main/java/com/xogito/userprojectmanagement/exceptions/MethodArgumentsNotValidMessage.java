@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExceptionMessage {
+public class MethodArgumentsNotValidMessage {
 
     private HttpStatus httpStatus;
-    private String message;
+    private List<String> errors;
 }

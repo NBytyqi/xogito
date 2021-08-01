@@ -38,7 +38,7 @@ public class Project {
     )
     Set<User> assignedUsers;
 
-//    @NotNull(message = "Project name is required")
+    @NotNull(message = "Project name is required")
     private String name;
     private String description;
 
