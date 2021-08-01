@@ -21,4 +21,5 @@ public interface ProjectService {
     List<ProjectInfoDto> searchProjectsByName(String projectName, Pageable pageable);
     ProjectDto getProjectById(Long projectId) throws ProjectNotFoundException;
     List<ProjectInfoDto> getAllProjects(Pageable pageable);
+    void unAassignUserToProject(AssignProjectDto assignProjectDto) throws UserNotFoundException, ProjectNotFoundException;
 }

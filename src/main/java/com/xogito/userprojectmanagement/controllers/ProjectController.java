@@ -9,6 +9,7 @@ import com.xogito.userprojectmanagement.exceptions.UserNotFoundException;
 import com.xogito.userprojectmanagement.services.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,12 +28,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/projects")
 @RequiredArgsConstructor
-public class ProjectControllers {
+public class ProjectController {
 
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<ProjectInfoDto>> getAllProjects(Pageable pageable) {
+    public ResponseEntity<List<ProjectInfoDto>> getAllProjects(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         return new ResponseEntity(projectService.getAllProjects(pageable), HttpStatus.OK);
     }
 
@@ -56,8 +57,13 @@ public class ProjectControllers {
         projectService.assignUserToProject(assignProjectDto);
     }
 
+    @PostMapping("/unassign-user")
+    public void unAssignUserToProject(@Valid @RequestBody AssignProjectDto assignProjectDto) throws UserNotFoundException, ProjectNotFoundException {
+        projectService.unAassignUserToProject(assignProjectDto);
+    }
+
     @GetMapping("/search")
-    public ResponseEntity<List<ProjectInfoDto>> searchProjectsByName(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<ProjectInfoDto>> searchProjectsByName(@RequestParam String query, @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return new ResponseEntity(projectService.searchProjectsByName(query, pageable), HttpStatus.OK);
     }
 

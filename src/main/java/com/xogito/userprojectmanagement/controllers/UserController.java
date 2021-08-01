@@ -5,6 +5,7 @@ import com.xogito.userprojectmanagement.exceptions.UserNotFoundException;
 import com.xogito.userprojectmanagement.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +28,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers(Pageable pageable) {
+    public ResponseEntity<List<UserDto>> getAllUsers(@PageableDefault(page = 0, size = 10) Pageable pageable) {
         return new ResponseEntity(userService.getAllUsers(pageable), HttpStatus.OK);
     }
 
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserDto>> getUsersByNameOrEmail(@RequestParam(required = true) String query, Pageable pageable) {
+    public ResponseEntity<List<UserDto>> getUsersByNameOrEmail(@RequestParam(required = true) String query, @PageableDefault(page = 0, size = 10) Pageable pageable) {
         return new ResponseEntity(userService.getUsersByNameOrEmail(query, pageable), HttpStatus.OK);
     }
 }

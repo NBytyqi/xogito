@@ -1,9 +1,9 @@
 package com.xogito.userprojectmanagement.services.impl;
 
-import com.xogito.userprojectmanagement.entities.dtos.AssignProjectDto;
-import com.xogito.userprojectmanagement.entities.dtos.ProjectDto;
 import com.xogito.userprojectmanagement.entities.Project;
 import com.xogito.userprojectmanagement.entities.User;
+import com.xogito.userprojectmanagement.entities.dtos.AssignProjectDto;
+import com.xogito.userprojectmanagement.entities.dtos.ProjectDto;
 import com.xogito.userprojectmanagement.entities.dtos.ProjectInfoDto;
 import com.xogito.userprojectmanagement.exceptions.ProjectNotFoundException;
 import com.xogito.userprojectmanagement.exceptions.UserNotFoundException;
@@ -14,7 +14,6 @@ import com.xogito.userprojectmanagement.repositories.UserRepository;
 import com.xogito.userprojectmanagement.services.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -85,5 +84,19 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectInfoDto> getAllProjects(Pageable pageable) {
         return projectInfoMapper.mapProjectsToInfoDtos(projectRepository.findAll(pageable).getContent());
+    }
+
+    @Override
+    public void unAassignUserToProject(AssignProjectDto assignProjectDto) throws UserNotFoundException, ProjectNotFoundException {
+        Long userId = assignProjectDto.getUserId();
+        Long projectId = assignProjectDto.getProjectId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        project.getAssignedUsers().remove(user);
+        projectRepository.save(project);
     }
 }
